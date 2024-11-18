@@ -13,9 +13,7 @@ defmodule DeteccionElixir.Application do
     config = AppConfig.load_config()
 
     # children =[{WebSocketExample, "wss://echo.websocket.org/"}]++  with_plug_server(config) ++ all_env_children(config) ++ env_children(env, config)
-    children =[
-      {Plug.Cowboy, scheme: :http, plug: WebsocketServer.Plug, options: [port: 4000]}
-    ]++  with_plug_server(config) ++ all_env_children(config) ++ env_children(env, config)
+    children = with_plug_server(config) ++ all_env_children(config) ++ env_children(env, config)
 
 
     opts = [strategy: :one_for_one, name: DeteccionElixir.Supervisor]
@@ -26,7 +24,7 @@ defmodule DeteccionElixir.Application do
     Logger.debug("Configure Http server in port #{inspect(port)}. ")
     [
       {Plug.Cowboy, scheme: :http, plug: ApiRest, options: [port: port]},
-
+      {Plug.Cowboy, scheme: :http, plug: WebsocketServer.Plug, options: [port: 4000]}
     ]
   end
 

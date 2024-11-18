@@ -6,6 +6,8 @@ defmodule DeteccionElixir.Infrastructure.Adapters.Kafka.Kafka do
   @topic "transaction_topic"
   @consumer_group "my_consumer_group"
 
+
+
   # Iniciar el GenServer
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -13,6 +15,7 @@ defmodule DeteccionElixir.Infrastructure.Adapters.Kafka.Kafka do
 
   # Definir el child_spec para el supervisor
   def child_spec(opts) do
+      
     %{
       id: __MODULE__,
       start: {__MODULE__, :start_link, [opts]},
@@ -41,7 +44,7 @@ defmodule DeteccionElixir.Infrastructure.Adapters.Kafka.Kafka do
     Task.start(fn ->
       KafkaEx.stream(topic, 0)
       |> Enum.each(fn %Message{value: message_value} ->
-        IO.puts("Mensaje recibido de Kafka: #{message_value}")
+        IO.puts("Mensaje x recibido de Kafka: #{message_value}")
       end)
     end)
   end
